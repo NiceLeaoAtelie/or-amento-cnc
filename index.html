@@ -3,119 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora CNC Paulo - Orçamentos</title>
+    <title>Calculadora CNC Paulo</title>
     <style>
-        :root { --primaria: #2c3e50; --secundaria: #3498db; --sucesso: #27ae60; --fundo: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--fundo); padding: 15px; margin: 0; }
-        .frmcnc { max-width: 650px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: var(--primaria); border-bottom: 2px solid var(--secundaria); padding-bottom: 10px; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .campo { display: flex; flex-direction: column; }
-        .campo-cheio { grid-column: span 2; }
-        label { font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #666; text-transform: uppercase; }
-        input, select { padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; background: #fff; }
-        input[readonly] { background: #f1f3f5; color: #495057; border: 1px solid #dee2e6; cursor: not-allowed; }
-        .editavel { background: #fffef0; border: 1px solid #f1c40f; } /* Amarelo clarinho para indicar que pode mexer */
-        .secao-titulo { grid-column: span 2; background: var(--primaria); color: white; padding: 6px 12px; border-radius: 4px; margin-top: 10px; font-size: 13px; }
-        .btn-group { grid-column: span 2; display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; }
-        #btnSalvar { background: var(--sucesso); color: white; }
-        #btnImprimir { background: var(--secundaria); color: white; }
-        button:hover { opacity: 0.9; }
-        .resultado-final { background: #2c3e50 !important; color: #fff !important; font-size: 20px !important; text-align: center; font-weight: bold !important; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .box { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        label { display: block; margin-top: 10px; font-size: 12px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .editavel { background: #fffde7; border: 1px solid #fbc02d; }
+        .readonly { background: #eeeeee; font-weight: bold; }
+        .btn-green { background: #2e7d32; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; margin-top: 20px; cursor: pointer; font-weight: bold; }
+        .resultado { background: #1a237e; color: white; font-size: 20px; text-align: center; padding: 10px; margin-top: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
 
-<div class="frmcnc">
-    <h2>Orçamento Corte CNC</h2>
+<div class="box">
+    <h2>Calculadora CNC</h2>
     
-    <div class="grid">
-        <div class="campo campo-cheio">
-            <label>Produto / Projeto:</label>
-            <input type="text" id="txtproduto" placeholder="Nome do item">
-        </div>
+    <label>PRODUTO:</label>
+    <input type="text" id="p_nome">
 
-        <div class="secao-titulo">⚙️ Tempo e Operação</div>
-        <div class="campo">
-            <label>Horas Máquina:</label>
-            <input type="number" id="txthoramaquina" step="0.01" value="0" oninput="calcular()">
-        </div>
-        <div class="campo">
-            <label>Valor Hora (R$ 1,50):</label>
-            <input type="text" id="txttotalhoramaquina" readonly>
-        </div>
+    <label>HORAS MÁQUINA:</label>
+    <input type="number" id="p_horas" value="0" oninput="calc()">
 
-        <div class="secao-titulo">🪵 Material e Dimensões (mm)</div>
-        <div class="campo campo-cheio">
-            <label>Material:</label>
-            <select id="lstnomematerial">
-                <option value="pinus">Pinus</option>
-                <option value="mdf6mm">MDF 6mm</option>
-                <option value="mdf3mm">MDF 3mm</option>
-                <option value="jequitiba">Jequitibá</option>
-                <option value="peroba">Peroba</option>
-                <option value="ipe_rosa">Ipê Rosa</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Valor M³ (R$):</label>
-            <input type="number" id="txtmetrocubico" value="0" oninput="calcular()">
-        </div>
-        <div class="campo">
-            <label>Espessura (mm):</label>
-            <input type="number" id="txtespessura" value="0" oninput="calcular()">
-        </div>
-        <div class="campo">
-            <label>Largura (mm):</label>
-            <input type="number" id="txtlargura" value="0" oninput="calcular()">
-        </div>
-        <div class="campo">
-            <label>Comprimento (mm):</label>
-            <input type="number" id="txtcomprimento" value="0" oninput="calcular()">
-        </div>
+    <label>MATERIAL:</label>
+    <select id="p_mat">
+        <option value="pinus">Pinus</option>
+        <option value="mdf6mm">MDF 6mm</option>
+        <option value="mdf3mm">MDF 3mm</option>
+        <option value="jequitiba">Jequitibá</option>
+    </select>
 
-        <div class="secao-titulo">💰 Ajustes de Preço e Custos</div>
-        <div class="campo">
-            <label>Mão de Obra (R$):</label>
-            <input type="number" id="txtmaodeobra" class="editavel" value="8.50" step="0.50" oninput="calcular()">
-        </div>
-        <div class="campo">
-            <label>Margem / Lucro (%):</label>
-            <input type="number" id="txtmargem_input" class="editavel" value="50" oninput="calcular()">
-        </div>
-        <div class="campo">
-            <label>Custo Material:</label>
-            <input type="text" id="txtcustomaterial" readonly>
-        </div>
-        <div class="campo">
-            <label>Custo Total:</label>
-            <input type="text" id="txtcustototal" readonly>
-        </div>
+    <label>VALOR M³ (R$):</label>
+    <input type="number" id="p_vlr_m3" value="0" oninput="calc()">
 
-        <div class="secao-titulo">🏁 Resultado Final</div>
-        <div class="campo">
-            <label>Taxa Cartão (5,99%):</label>
-            <input type="text" id="txttaxacartao" readonly>
-        </div>
-        <div class="campo">
-            <label>Lucro Realizado:</label>
-            <input type="text" id="txtvalor_margem" readonly>
-        </div>
-        
-        <div class="campo campo-cheio">
-            <label>Preço Sugerido de Venda:</label>
-            <input type="text" id="txtprecovenda" class="resultado-final" readonly>
-        </div>
-
-        <div class="btn-group">
-            <button id="btnSalvar" onclick="salvarOrcamento()">💾 Salvar Planilha</button>
-            <button id="btnImprimir" onclick="window.print()">🖨️ PDF / Imprimir</button>
-        </div>
+    <div style="display:flex; gap:10px">
+        <div><label>LARG(mm):</label><input type="number" id="p_l" value="0" oninput="calc()"></div>
+        <div><label>COMP(mm):</label><input type="number" id="p_c" value="0" oninput="calc()"></div>
+        <div><label>ESP(mm):</label><input type="number" id="p_e" value="0" oninput="calc()"></div>
     </div>
+
+    <label>MÃO DE OBRA (R$):</label>
+    <input type="number" id="p_mo" class="editavel" value="8.50" oninput="calc()">
+
+    <label>MARGEM (%):</label>
+    <input type="number" id="p_margem" class="editavel" value="50" oninput="calc()">
+
+    <label>CUSTO MATERIAL:</label>
+    <input type="text" id="res_mat" class="readonly" readonly>
+
+    <label>PREÇO DE VENDA:</label>
+    <div id="res_venda" class="resultado">R$ 0,00</div>
+
+    <button class="btn-green" onclick="salvar()" id="btn_salvar">SALVAR NA PLANILHA</button>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzu0g8Ycc_OdmfR1_bCX0zKKbaM9qJ1cwCJw7_99gxgl3j_xWu5B-RDZOD4BW5D20vo/exec"; // Cole o link do seu Google Script aqui
+    // ⚠️ COLOQUE SEU LINK DO GOOGLE AQUI
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzu0g8Ycc_OdmfR1_bCX0zKKbaM9qJ1cwCJw7_99gxgl3j_xWu5B-RDZOD4BW5D20vo/exec";
 
-    function
+    function calc() {
+        const h = parseFloat(document.getElementById('p_horas').value) || 0;
+        const vM3 = parseFloat(document.getElementById('p_vlr_m3').value) || 0;
+        const l = parseFloat(document.getElementById('p_l').value) || 0;
+        const c = parseFloat(document.getElementById('p_c').value) || 0;
+        const e = parseFloat(document.getElementById('p_e').value) || 0;
+        const mo = parseFloat(document.getElementById('p_mo').value) || 0;
+        const marg = (parseFloat(document.getElementById('p_margem').value) || 0) / 100;
+
+        const totalMaq = h * 1.50;
+        const volM3 = (l * c * e) / 1000000000;
+        const custoMat = volM3 * vM3;
+        
+        const custoTotal = mo + custoMat + totalMaq;
+        const subtotal = custoTotal + (custoTotal * marg);
+        const precoFinal = subtotal + (subtotal * 0.0599);
+
+        document.getElementById('res_mat').value = custoMat.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+        document.getElementById('res_venda').innerText = precoFinal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+    }
+
+    async function salvar() {
+        const btn = document.getElementById('btn_salvar');
+        btn.disabled = true;
+        btn.innerText = "ENVIANDO...";
+
+        const payload = {
+            action: "salvarOrcamento",
+            produto: document.getElementById('p_nome').value,
+            custoMaterial: document.getElementById('res_mat').value,
+            maoDeObra: document.getElementById('p_mo').value
+        };
+
+        try {
+            await fetch(URL_SCRIPT, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            });
+            alert("Enviado com sucesso!");
+        } catch (err) {
+            alert("Erro ao enviar.");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "SALVAR NA PLANILHA";
+        }
+    }
+</script>
+</body>
+</html>
